@@ -1,5 +1,5 @@
 import streamlit as st
-
+st.set_page_config(layout="wide")
 
 #Start of UI
 image_path = "coherent-clsa-logo.png"
