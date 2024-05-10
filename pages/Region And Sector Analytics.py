@@ -121,7 +121,7 @@ with st.form("DC Form"):
   with col04:
     st.text("‎")
 
-  DCbutton_clicked = st.form_submit_button("Calculate")
+  DCbutton_clicked = st.form_submit_button("Simulate")
 if DCbutton_clicked:   
   DCalldata = definedCombination()
   processingTime = DCalldata.json()['response_meta']['process_time']
