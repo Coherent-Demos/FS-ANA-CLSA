@@ -48,7 +48,6 @@ def definedCombination(inputdata):
       DCloading.success("API call successful")
     return response
 
-@st.cache_data
 def discoveryAPI(selectedCompany):  
 
     payload = json.dumps({
@@ -239,12 +238,12 @@ def multiply_and_convert_to_json(input_df):
     return json_data
 
 #Start of UI
-image_path = "coherent-clsa-logo.png"
-st.image(image_path, caption="")
+image_path = "coherent-clsa-logo.svg"
+st.image(image_path, caption="", width=280)
 
-st.write("## Equity Analytics - By Company")
 st.text("‎") 
-
+st.write("## Equity Analytics")
+st.write("Input your financial assumptions and instantly receive analysis on key financial metrics for a broad range of companies. Our advanced models transform your inputs into valuable outputs, helping you make informed investment decisions.")
 
 #initialize data
 json_data = [
@@ -289,238 +288,239 @@ json_data = [
     "NEXT - MAX": 8.46102123851926
   }
 ]
-
-#initialize sample output
 Spark_outputs = {"gm_htable":[{"Historical":0,"Count":0},{"Historical":0,"Count":0},{"Historical":0,"Count":0},{"Historical":0,"Count":0},{"Historical":0,"Count":0},{"Historical":0,"Count":0},{"Historical":0,"Count":0},{"Historical":0,"Count":0},{"Historical":0,"Count":0},{"Historical":0,"Count":0},{"Historical":0,"Count":0}],"listOfOutputs":[{"DS OUTPUTS":"net_profit_margin"},{"DS OUTPUTS":"revenue_growth"},{"DS OUTPUTS":"target_multiple"},{"DS OUTPUTS":"target_price"}],"minmaxtable":[{"Metric":"Analys Prediction","Revenue Growth":350.540556197299,"Net Profit Margin":12.0240055813407,"Gross Margin":"","Target multiple":16.8226055718116,"Target Price upside":91.2929594181175},{"Metric":"Min (Simulation)","Revenue Growth":-3.3931025420385,"Net Profit Margin":-838.675349051121,"Gross Margin":-838.675349051121,"Target multiple":-838.675349051121,"Target Price upside":-3.3931025420385},{"Metric":"Max (Simulation)","Revenue Growth":5.1129808598092,"Net Profit Margin":1089.80887713455,"Gross Margin":1089.80887713455,"Target multiple":127.252380327068,"Target Price upside":5.1129808598092}],"npm_htable":[{"Historical":-110,"Count":0},{"Historical":-104,"Count":2},{"Historical":-98,"Count":1},{"Historical":-92,"Count":0},{"Historical":-86,"Count":0},{"Historical":-80,"Count":0},{"Historical":-74,"Count":0},{"Historical":-68,"Count":0},{"Historical":-62,"Count":0},{"Historical":-56,"Count":0},{"Historical":-50,"Count":0},{"Historical":-44,"Count":1},{"Historical":-38,"Count":0},{"Historical":-32,"Count":2},{"Historical":-26,"Count":0},{"Historical":-20,"Count":0},{"Historical":-14,"Count":0},{"Historical":-8,"Count":2},{"Historical":-2,"Count":1},{"Historical":4,"Count":5},{"Historical":10,"Count":8},{"Historical":16,"Count":13},{"Historical":22,"Count":5},{"Historical":28,"Count":0},{"Historical":34,"Count":0},{"Historical":40,"Count":0}],"rg_htable":[{"Historical":-79,"Count":1},{"Historical":-58,"Count":1},{"Historical":-37,"Count":3},{"Historical":-16,"Count":11},{"Historical":5,"Count":17},{"Historical":26,"Count":1},{"Historical":47,"Count":2},{"Historical":68,"Count":2},{"Historical":89,"Count":0},{"Historical":110,"Count":0},{"Historical":131,"Count":0},{"Historical":152,"Count":0},{"Historical":173,"Count":0},{"Historical":194,"Count":0},{"Historical":215,"Count":0},{"Historical":236,"Count":0},{"Historical":257,"Count":0},{"Historical":278,"Count":0},{"Historical":299,"Count":0},{"Historical":320,"Count":0},{"Historical":341,"Count":1},{"Historical":362,"Count":0},{"Historical":383,"Count":0},{"Historical":404,"Count":0}],"Simualtions":256,"TM_htable":[{"Historical":8,"Count":997},{"Historical":62,"Count":17},{"Historical":116,"Count":18},{"Historical":170,"Count":0},{"Historical":224,"Count":0},{"Historical":278,"Count":0},{"Historical":332,"Count":0},{"Historical":386,"Count":0},{"Historical":440,"Count":2},{"Historical":494,"Count":1},{"Historical":548,"Count":2},{"Historical":602,"Count":0},{"Historical":656,"Count":0},{"Historical":710,"Count":0},{"Historical":764,"Count":0}],"TPU_htable":[{"Historical":-58,"Count":275},{"Historical":-37,"Count":181},{"Historical":-16,"Count":106},{"Historical":5,"Count":132},{"Historical":26,"Count":286},{"Historical":47,"Count":230},{"Historical":68,"Count":118},{"Historical":89,"Count":78},{"Historical":110,"Count":48},{"Historical":131,"Count":14},{"Historical":152,"Count":1},{"Historical":173,"Count":0}],"Gross Margin":0,"Net Margin":3.77899625339069,"Revenue Growth":0.179666874434118,"Target Multilple":9.79730203448272,"Target Price":0.859706677248583,"Target Price (Upside)":0}
 discoveryData = {"listOfCompanies":[{"List of Companies":"MGM China","Logo":"https://www.amk-international.com/partners/mgm.png"},{"List of Companies":"PICC","Logo":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/People%27s_Insurance_Company_of_China_logo.svg/1280px-People%27s_Insurance_Company_of_China_logo.svg.png"},{"List of Companies":"Sungrow","Logo":"https://companieslogo.com/img/orig/300274.SZ_BIG-11a258e5.png?t=1685244307"},{"List of Companies":"Yum China","Logo":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdaHylMHKhNNBUxWlWOiKp3WoDgb7KyupjgyqJElki0g&s"},{"List of Companies":"CSL","Logo":"https://toppng.com/uploads/preview/csl-vector-logo-download-11573949412sjfa8yj7kq.png"},{"List of Companies":"CIMB","Logo":"https://originallyus.sg/wp-content/uploads/2022/01/CIMB-Logo.png"},{"List of Companies":"Grab","Logo":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb4y-nlez45Pk3DsBPWlkt7482eXyrQgyyHcARP5TEBg&s"},{"List of Companies":"MediaTek","Logo":"https://w7.pngwing.com/pngs/893/931/png-transparent-logo-mediatek-brand-product-design-label-ces-2018-monitor-text-label-rectangle-thumbnail.png"}],"listOfRegions":[{"List of Regions":"China","Icon":"🇨🇳"},{"List of Regions":"Korea","Icon":"🇰🇷"},{"List of Regions":"Australia","Icon":"🇦🇺"},{"List of Regions":"Malaysia","Icon":"🇲🇾"},{"List of Regions":"Singapore","Icon":"🇸🇬"},{"List of Regions":"Taiwan","Icon":"🇹🇼"}],"listOfSectors":[{"List of Sectors":"Gaming","Icon":"🎮"},{"List of Sectors":"F&B","Icon":"🍽️"},{"List of Sectors":"Healthcare","Icon":"🚑"},{"List of Sectors":"Banks","Icon":"🏦"},{"List of Sectors":"Transport","Icon":"🚌"},{"List of Sectors":"Tech","Icon":"🤖"}],"Model_Inputs":[{"Model Inputs":"Kfc Cogs Growth","CURR":0.31,"NEXT":0.31,"HISTORICAL 1SD":0.0621},{"Model Inputs":"Kfc Same Store Sales Growth","CURR":0.05,"NEXT":0.01,"HISTORICAL 1SD":0.0142},{"Model Inputs":"Pizzahut Cogs Growth","CURR":0.31,"NEXT":0.31,"HISTORICAL 1SD":0.0604},{"Model Inputs":"Pizzahut Same Store Sales Growth","CURR":0.07,"NEXT":0.02,"HISTORICAL 1SD":0.0177}],"Model_Mapping":[{"INPUTS":"FY0_KFC_COGS_growth","OUTPUTS":"Gross_Margin"},{"INPUTS":"FY0_KFC_same_store_sales_growth","OUTPUTS":"Net_profit_margin"},{"INPUTS":"FY0_Pizzahut_COGS_growth","OUTPUTS":"Revenue_growth"},{"INPUTS":"FY0_Pizzahut_same_store_sales_growth","OUTPUTS":"target_multiple"},{"INPUTS":"FY1_KFC_COGS_growth","OUTPUTS":"targetprice_upside"},{"INPUTS":"FY1_KFC_same_store_sales_growth","OUTPUTS":"historicaldata"},{"INPUTS":"FY1_Pizzahut_COGS_growth","OUTPUTS":""},{"INPUTS":"FY1_Pizzahut_same_store_sales_growth","OUTPUTS":""}],"Model_Outputs":[{"Model Outputs":"Gross Margin"},{"Model Outputs":"Net Profit Margin"},{"Model Outputs":"Revenue Growth"},{"Model Outputs":"Target Multiple"},{"Model Outputs":"Targetprice Upside"},{"Model Outputs":"Historicaldata"}],"Region":"China","Sector":"F&B","Input Frequency":"FY","Spark Service":"Company models/Yum China_080223-v4","Logo URL":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdaHylMHKhNNBUxWlWOiKp3WoDgb7KyupjgyqJElki0g&s","No of Companies":8,"No of Regions":6,"No of Sectors":6}
 DCerrors = []
-companyOptions = ['MGM China', 'PICC', 'Sungrow', 'Yum China', 'CSL', 'CIMB', 'Grab']
+companyOptions = ["", 'MGM China', 'PICC', 'Sungrow', 'Yum China', 'CSL', 'CIMB', 'Grab']
 update_data = discoveryData.get("Model_Inputs")
 
-with st.expander("Spark Model", expanded=True):
+with st.expander("Spark Model"):
   st.markdown('[https://spark.uat.jp.coherent.global/clsa/products/Aggregate%20Models/Output%20Analysis%20-%20by%20Company/apiTester/test](https://spark.uat.jp.coherent.global/clsa/products/Aggregate%20Models/Output%20Analysis%20-%20by%20Company/apiTester/test)')
 
 st.write("  ")
 
 list_of_companies_data = discoveryData.get("listOfCompanies")
 if list_of_companies_data:
-  companyOptions = [item["List of Companies"] for item in list_of_companies_data]
+  companyOptions = [""] + [item["List of Companies"] for item in list_of_companies_data]
 colcompany01, colcompany02, colcompany03 = st.columns([1, 1, 1])
 with colcompany01:  
-  selectedCompany = st.selectbox("Company", companyOptions)
+  selectedCompany = st.selectbox("Select a Company", companyOptions)
 with colcompany02:
   st.write("  ")
 with colcompany03:
   st.write("  ")
-  
 
-with st.form("DC Form"):
-  Go = True
-  ERRORBOX = st.empty()
-  DCLoading = st.empty()
+if selectedCompany != "":
 
-  st.write("Enter Min & Max Inputs")
-  inputTableContainer = st.container()
-  DCbutton_clickedContainer = st.container()
+  with st.expander("", expanded=True):
+    col30, col31, col32, col33, col34 = st.columns([0.1,1,1,1,1])
+    with col30:
+      st.write("  ")
+    with col31:
+      LOGO_placeholder = st.empty()
+    with col32:  
+      COMPANY_placeholder = st.empty()
+    with col33:
+      REGION_placeholder = st.empty()
+    with col34:
+      SECTOR_placeholder = st.empty()
 
-st.write("  ")
-st.write("  ")
-st.write("  ")
+    # Call discoveryAPI
+    response = discoveryAPI(selectedCompany)
+    # Parse the JSON response
+    discoveryData = response.json()['response_data']['outputs']
+    update_data = discoveryData.get("Model_Inputs")
 
-ResultsContainer = st.container()
+    LOGO_placeholder.image(discoveryData.get("Logo URL"), caption="", width=200)
+    COMPANY_placeholder.metric("Company", selectedCompany)
+    REGION_placeholder.metric("Region", discoveryData.get("Region"))
+    SECTOR_placeholder.metric("Sector", discoveryData.get("Sector"))
 
-# Call discoveryAPI
-response = discoveryAPI(selectedCompany)
+    st.write("  ")
 
-# Parse the JSON response
-discoveryData = response.json()['response_data']['outputs']
-update_data = discoveryData.get("Model_Inputs")
+  with st.form("DC Form"):
+    Go = True
+    ERRORBOX = st.empty()
+    DCLoading = st.empty()
 
-with inputTableContainer:
-  for i in range(len(json_data)):
-    json_data[i]["INPUTS"] = update_data[i]["Model Inputs"]  # Update INPUTS with Model Inputs
-    json_data[i]["Historical 1 SD"] = update_data[i]["HISTORICAL 1SD"]  # Update SD with Model Inputs
-    json_data[i]["CURR - BASE"] = update_data[i]["CURR"]  # Update CURR - BASE with CURR
-    json_data[i]["NEXT - BASE"] = update_data[i]["NEXT"]  # Update NEXT - BASE with NEXT
+    st.write("Enter Min & Max Inputs")
+    inputTableContainer = st.container()
+    DCbutton_clickedContainer = st.container()
 
-  def highlight_col(x):
-    r = 'background-color: #fafafa; color: #909090'
-    df1 = pd.DataFrame('', index=x.index, columns=x.columns)
-    df1.loc[:, :] = r
-    return df1  
+  st.write("  ")
+  st.write("  ")
 
-  # Create a DataFrame from JSON data
-  df = pd.DataFrame(json_data)
-  all_numeric_columns = df.select_dtypes(include=[float, int]).columns
+  ResultsContainer = st.container()
 
-  columns_to_exclude = []
-  numeric_columns = [col for col in all_numeric_columns if col not in columns_to_exclude]
+  with inputTableContainer:
+    for i in range(len(json_data)):
+      json_data[i]["INPUTS"] = update_data[i]["Model Inputs"]  # Update INPUTS with Model Inputs
+      json_data[i]["Historical 1 SD"] = update_data[i]["HISTORICAL 1SD"]  # Update SD with Model Inputs
+      json_data[i]["CURR - BASE"] = update_data[i]["CURR"]  # Update CURR - BASE with CURR
+      json_data[i]["NEXT - BASE"] = update_data[i]["NEXT"]  # Update NEXT - BASE with NEXT
 
-  df[numeric_columns] = df[numeric_columns] * 100
-  df[all_numeric_columns] = df[all_numeric_columns].applymap('{:.2f}'.format) + " %"
+      json_data[i]["CURR - MIN"] = json_data[i]["CURR - BASE"] - json_data[i]["Historical 1 SD"]
+      json_data[i]["CURR - MAX"] = json_data[i]["CURR - BASE"] + json_data[i]["Historical 1 SD"]
+      json_data[i]["NEXT - MIN"] = json_data[i]["NEXT - BASE"] - json_data[i]["Historical 1 SD"]
+      json_data[i]["NEXT - MAX"] = json_data[i]["NEXT - BASE"] + json_data[i]["Historical 1 SD"]
 
-  inputTable = st.data_editor(
-    df.style.apply(highlight_col, axis=None),
-    use_container_width=True,
-    hide_index=True,
-    column_config={
-      "INPUTS": st.column_config.Column("INPUTS", disabled=True),
-      "Historical 1 SD": st.column_config.Column("Historical 1 SD", disabled=True),
-      "CURR - BASE": st.column_config.Column("CURR - BASE", disabled=True),
-      "NEXT - BASE": st.column_config.Column("NEXT - BASE", disabled=True),
-      "CURR - MIN": st.column_config.Column("CURR - MIN"),
-      "CURR -  MAX": st.column_config.Column("CURR -  MAX"),
-      "NEXT - MIN": st.column_config.Column("NEXT - MIN"),
-      "NEXT - MAX": st.column_config.Column("NEXT - MAX")
-    }
-  )
+    def highlight_col(x):
+      r = 'background-color: #fafafa; color: #909090'
+      df1 = pd.DataFrame('', index=x.index, columns=x.columns)
+      df1.loc[:, :] = r
+      return df1  
+
+    # Create a DataFrame from JSON data
+    df = pd.DataFrame(json_data)
+    all_numeric_columns = df.select_dtypes(include=[float, int]).columns
+
+    columns_to_exclude = []
+    numeric_columns = [col for col in all_numeric_columns if col not in columns_to_exclude]
+
+    df[numeric_columns] = df[numeric_columns] * 100
+    df[all_numeric_columns] = df[all_numeric_columns].applymap('{:.2f}'.format) + " %"
+
+    inputTable = st.data_editor(
+      df.style.apply(highlight_col, axis=None),
+      use_container_width=True,
+      hide_index=True,
+      column_config={
+        "INPUTS": st.column_config.Column("INPUTS", disabled=True),
+        "Historical 1 SD": st.column_config.Column("Historical 1 SD", disabled=True),
+        "CURR - BASE": st.column_config.Column("CURR - BASE", disabled=True),
+        "NEXT - BASE": st.column_config.Column("NEXT - BASE", disabled=True),
+        "CURR - MIN": st.column_config.Column("CURR - MIN"),
+        "CURR -  MAX": st.column_config.Column("CURR -  MAX"),
+        "NEXT - MIN": st.column_config.Column("NEXT - MIN"),
+        "NEXT - MAX": st.column_config.Column("NEXT - MAX")
+      }
+    )
 
 
-with DCbutton_clickedContainer:
-  DCbutton_clicked = st.form_submit_button("Generate Output")
-  if DCbutton_clicked: 
-    apiInput = multiply_and_convert_to_json(inputTable)
-    apiInput_dict = json.loads(apiInput)
-    DCalldata = definedCombination(apiInput_dict)
-    processingTime = DCalldata.json()['response_meta']['process_time']
-    Spark_outputs = DCalldata.json()['response_data']['outputs']
-    DCerrors = DCalldata.json()['response_data']['errors']
+  with DCbutton_clickedContainer:
+    DCbutton_clicked = st.form_submit_button("Simulate")
+    if DCbutton_clicked: 
+      apiInput = multiply_and_convert_to_json(inputTable)
+      apiInput_dict = json.loads(apiInput)
+      DCalldata = definedCombination(apiInput_dict)
+      processingTime = DCalldata.json()['response_meta']['process_time']
+      Spark_outputs = DCalldata.json()['response_data']['outputs']
+      DCerrors = DCalldata.json()['response_data']['errors']
 
-    with ResultsContainer:
-      st.write(selectedCompany + " Info")
-      with st.expander("", expanded=True):
-        col30, col31, col32, col33, col34 = st.columns([0.1,1,1,1,1])
-        with col30:
-          st.write("  ")
-        with col31:
-          LOGO_placeholder = st.empty()
-        with col32:  
-          COMPANY_placeholder = st.empty()
-        with col33:
-          REGION_placeholder = st.empty()
-        with col34:
-          SECTOR_placeholder = st.empty()
-        st.write("  ")
+      with ResultsContainer:
+        colresults01, colresults02 = st.columns([1, 1])
+        with colresults01:
+          st.write(selectedCompany + " Results")
+        with colresults02: 
+          st.markdown(f"<p style='text-align: right;'>Processing Time: {processingTime} ms</p>", unsafe_allow_html=True)
+        
+        with st.expander("", expanded=True):
 
-      
-      colresults01, colresults02 = st.columns([1, 1])
-      with colresults01:
-        st.write(selectedCompany + " Results")
-      with colresults02: 
-        st.markdown(f"<p style='text-align: right;'>Processing Time: {processingTime} ms</p>", unsafe_allow_html=True)
-      
-      with st.expander("", expanded=True):
+          col01, col02, col03, col04, col05, col06 = st.columns([1,1,1,1,1,1])
+          with col01:
+            GM_METRIC_placeholder = st.empty()
+          with col02:
+            NPM_METRIC_placeholder = st.empty()
+          with col03:
+            RG_METRIC_placeholder = st.empty()
+          with col04:
+            TM_METRIC_placeholder = st.empty()
+          with col05:
+            TP_METRIC_placeholder = st.empty()
+          with col06:
+            TPU_METRIC_placeholder = st.empty()
 
-        col01, col02, col03, col04, col05, col06 = st.columns([1,1,1,1,1,1])
-        with col01:
-          GM_METRIC_placeholder = st.empty()
-        with col02:
-          NPM_METRIC_placeholder = st.empty()
-        with col03:
-          RG_METRIC_placeholder = st.empty()
-        with col04:
-          TM_METRIC_placeholder = st.empty()
-        with col05:
-          TP_METRIC_placeholder = st.empty()
-        with col06:
-          TPU_METRIC_placeholder = st.empty()
+          st.markdown('***')
 
-        st.markdown('***')
+          col11, col12 = st.columns([1,1])
+          with col11:
+            RG_CHART_placeholder = st.empty()
+          with col12:
+            NPM_CHART_placeholder = st.empty()
+            
+          col14, col15= st.columns([1,1])
+          with col14:
+            TM_CHART_placeholder = st.empty()
+          with col15:
+            TPU_CHART_placeholder = st.empty()
 
-        col11, col12 = st.columns([1,1])
-        with col11:
-          RG_CHART_placeholder = st.empty()
-        with col12:
-          NPM_CHART_placeholder = st.empty()
-          
-        col14, col15= st.columns([1,1])
-        with col14:
-          TM_CHART_placeholder = st.empty()
-        with col15:
-          TPU_CHART_placeholder = st.empty()
+        # Chart value averages 
+        RG_AVG = round(Spark_outputs["Revenue Growth"] * 100, 2)
+        RG_METRIC_placeholder.metric(label='Revenue Growth (%)', value=f"{RG_AVG}%" if RG_AVG != 0 else "N/A") 
 
-      LOGO_placeholder.image(discoveryData.get("Logo URL"), caption="", width=200)
-      COMPANY_placeholder.metric("Company", selectedCompany)
-      REGION_placeholder.metric("Region", discoveryData.get("Region"))
-      SECTOR_placeholder.metric("Sector", discoveryData.get("Sector"))
+        GM_AVG = round(Spark_outputs["Gross Margin"] * 100, 1)
+        GM_METRIC_placeholder.metric(label='Gross Margin (%)', value=f"{GM_AVG}%" if GM_AVG != 0 else "N/A")
 
-      # Chart value averages 
-      RG_AVG = round(Spark_outputs["Revenue Growth"] * 100, 2)
-      RG_METRIC_placeholder.metric(label='Revenue Growth (%)', value=f"{RG_AVG}%" if RG_AVG != 0 else "N/A") 
+        NPM_AVG = round(Spark_outputs["Net Margin"] * 100, 2)
+        NPM_METRIC_placeholder.metric(label='Net Margin (%)', value=f"{NPM_AVG}%" if NPM_AVG != 0 else "N/A")
 
-      GM_AVG = round(Spark_outputs["Gross Margin"] * 100, 1)
-      GM_METRIC_placeholder.metric(label='Gross Margin (%)', value=f"{GM_AVG}%" if GM_AVG != 0 else "N/A")
+        TM_AVG = round(Spark_outputs["Target Multilple"], 2)
+        TM_METRIC_placeholder.metric(label='Target Multiple (x)', value=str(TM_AVG) if TM_AVG != 0 else "N/A")
 
-      NPM_AVG = round(Spark_outputs["Net Margin"] * 100, 2)
-      NPM_METRIC_placeholder.metric(label='Net Margin (%)', value=f"{NPM_AVG}%" if NPM_AVG != 0 else "N/A")
+        TP_AVG = round(Spark_outputs["Target Price"], 2)
+        TP_METRIC_placeholder.metric(label='Target Price ($)', value=str(TP_AVG) if TP_AVG != 0 else "N/A")
 
-      TM_AVG = round(Spark_outputs["Target Multilple"], 2)
-      TM_METRIC_placeholder.metric(label='Target Multiple (x)', value=str(TM_AVG) if TM_AVG != 0 else "N/A")
+        TPU_AVG = round(Spark_outputs["Target Price (Upside)"], 2)
+        TPU_METRIC_placeholder.metric(label='Target Price Upside ($)', value=str(TPU_AVG) if TPU_AVG != 0 else "N/A")
+        
+        #generate line chart of results
+        if not DCerrors:
+          data_rg = pd.DataFrame(Spark_outputs["rg_htable"])
+          value_pairs_rg = {
+            "Min": round(Spark_outputs["minmaxtable"][1]["Revenue Growth"], 1),
+            "Max": round(Spark_outputs["minmaxtable"][2]["Revenue Growth"], 1),
+            "Analyst Prediction": Spark_outputs["minmaxtable"][0]["Revenue Growth"]
+          }
+          chart_fig = generate_comb_chart(data_rg, value_pairs_rg, "Revenue Growth")
+          RG_CHART_placeholder.plotly_chart(chart_fig)
 
-      TP_AVG = round(Spark_outputs["Target Price"], 2)
-      TP_METRIC_placeholder.metric(label='Target Price ($)', value=str(TP_AVG) if TP_AVG != 0 else "N/A")
+          data_npm = pd.DataFrame(Spark_outputs["npm_htable"])
+          value_pairs_npm = {
+            "Min": round(Spark_outputs["minmaxtable"][1]["Net Profit Margin"], 2),
+            "Max": round(Spark_outputs["minmaxtable"][2]["Net Profit Margin"], 2),
+            "Analyst Prediction": Spark_outputs["minmaxtable"][0]["Net Profit Margin"]
+          }
+          chart_fig = generate_comb_chart(data_npm, value_pairs_npm, "Net Profit Margin")
+          NPM_CHART_placeholder.plotly_chart(chart_fig)
 
-      TPU_AVG = round(Spark_outputs["Target Price (Upside)"], 2)
-      TPU_METRIC_placeholder.metric(label='Target Price Upside ($)', value=str(TPU_AVG) if TPU_AVG != 0 else "N/A")
-      
-      #generate line chart of results
-      if not DCerrors:
-        data_rg = pd.DataFrame(Spark_outputs["rg_htable"])
-        value_pairs_rg = {
-          "Min": round(Spark_outputs["minmaxtable"][1]["Revenue Growth"], 1),
-          "Max": round(Spark_outputs["minmaxtable"][2]["Revenue Growth"], 1),
-          "Analyst Prediction": Spark_outputs["minmaxtable"][0]["Revenue Growth"]
-        }
-        chart_fig = generate_comb_chart(data_rg, value_pairs_rg, "Revenue Growth")
-        RG_CHART_placeholder.plotly_chart(chart_fig)
+          data_tm = pd.DataFrame(Spark_outputs["TM_htable"])
+          value_pairs_tm = {
+            "Min": round(Spark_outputs["minmaxtable"][1]["Target multiple"], 2),
+            "Max": round(Spark_outputs["minmaxtable"][2]["Target multiple"], 2),
+            "Analyst Prediction": Spark_outputs["minmaxtable"][0]["Target multiple"]
+          }
+          chart_fig = generate_comb_chart(data_tm, value_pairs_tm, "Target Multiple")
+          TM_CHART_placeholder.plotly_chart(chart_fig)
 
-        data_npm = pd.DataFrame(Spark_outputs["npm_htable"])
-        value_pairs_npm = {
-          "Min": round(Spark_outputs["minmaxtable"][1]["Net Profit Margin"], 2),
-          "Max": round(Spark_outputs["minmaxtable"][2]["Net Profit Margin"], 2),
-          "Analyst Prediction": Spark_outputs["minmaxtable"][0]["Net Profit Margin"]
-        }
-        chart_fig = generate_comb_chart(data_npm, value_pairs_npm, "Net Profit Margin")
-        NPM_CHART_placeholder.plotly_chart(chart_fig)
+          data_tpu = pd.DataFrame(Spark_outputs["TPU_htable"])
+          value_pairs_tpu = {
+            "Min": round(Spark_outputs["minmaxtable"][1]["Target Price upside"], 2),
+            "Max": round(Spark_outputs["minmaxtable"][2]["Target Price upside"], 2),
+            "Analyst Prediction": Spark_outputs["minmaxtable"][0]["Target Price upside"]
+          }
+          chart_fig = generate_comb_chart(data_tpu, value_pairs_tpu, "Target Price Upside")
+          TPU_CHART_placeholder.plotly_chart(chart_fig)
 
-        data_tm = pd.DataFrame(Spark_outputs["TM_htable"])
-        value_pairs_tm = {
-          "Min": round(Spark_outputs["minmaxtable"][1]["Target multiple"], 2),
-          "Max": round(Spark_outputs["minmaxtable"][2]["Target multiple"], 2),
-          "Analyst Prediction": Spark_outputs["minmaxtable"][0]["Target multiple"]
-        }
-        chart_fig = generate_comb_chart(data_tm, value_pairs_tm, "Target Multiple")
-        TM_CHART_placeholder.plotly_chart(chart_fig)
+          # Function to format values safely
+          def safe_format(value):
+              try:
+                  # If the value is zero or can be converted to a float, format it.
+                  return "{:,.2f}".format(float(value))
+              except (TypeError, ValueError):
+                  # If there is an error during formatting, return a default string
+                  return "N/A"
 
-        data_tpu = pd.DataFrame(Spark_outputs["TPU_htable"])
-        value_pairs_tpu = {
-          "Min": round(Spark_outputs["minmaxtable"][1]["Target Price upside"], 2),
-          "Max": round(Spark_outputs["minmaxtable"][2]["Target Price upside"], 2),
-          "Analyst Prediction": Spark_outputs["minmaxtable"][0]["Target Price upside"]
-        }
-        chart_fig = generate_comb_chart(data_tpu, value_pairs_tpu, "Target Price Upside")
-        TPU_CHART_placeholder.plotly_chart(chart_fig)
-
-        # Function to format values safely
-        def safe_format(value):
-            try:
-                # If the value is zero or can be converted to a float, format it.
-                return "{:,.2f}".format(float(value))
-            except (TypeError, ValueError):
-                # If there is an error during formatting, return a default string
-                return "N/A"
-
-        initState = False
-      else:
-        error_messages = [error["message"] for error in DCerrors]
-        if error_messages:
-            ERRORBOX.error("\n ".join(error_messages))
+          initState = False
+        else:
+          error_messages = [error["message"] for error in DCerrors]
+          if error_messages:
+              ERRORBOX.error("\n ".join(error_messages))
   
 # Add the style tag to change button color to blue
 st.markdown("""
 <style>
     .stButton button { /* Adjust the class name according to your button's class */
-        background-color: blue !important;
+        background-color: #6700F6 !important;
         color: white !important;
     }
 </style>

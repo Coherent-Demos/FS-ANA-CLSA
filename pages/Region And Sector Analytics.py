@@ -195,8 +195,8 @@ def multiply_and_convert_to_json(input_df):
     return json_data
 
 #Start of UI
-image_path = "coherent-clsa-logo.png"
-st.image(image_path, caption="")
+image_path = "coherent-clsa-logo.svg"
+st.image(image_path, caption="", width=80)
 
 st.write("## Company Valuations - Region & Sector Analysis")
 st.text("‎") 
