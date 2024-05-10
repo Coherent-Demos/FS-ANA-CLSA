@@ -22,7 +22,7 @@ with col1:
 with col2:
   with st.expander("**Region Sector & Analytics Models**", expanded=True):
     st.text("‎")
-    st.subheader("Discover Region Sector Analytics with Ease")
-    st.write("Access our comprehensive database of Region Sector Analytics to compare and contrast companies across multiple sectors. Our tool provides a detailed analysis of each company’s valuation, enabling you to identify investment opportunities quickly.")
+    st.subheader("Discover Region & Sector Analytics with Ease")
+    st.write("Access our comprehensive database of region and sector analytics to compare and contrast companies across multiple sectors. Our tool provides a detailed analysis of each company’s valuation, enabling you to identify investment opportunities quickly.")
     st.text("‎")
     st.page_link("pages/Region And Sector Analytics.py", label="Open Region & Sector Analytics Model →", icon="2️⃣")
