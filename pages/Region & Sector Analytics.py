@@ -77,7 +77,7 @@ image_path = "coherent-clsa-logo.svg"
 st.image(image_path, caption="", width=280)
 
 st.write("## Region & Sector Analytics")
-st.write("Input your financial assumptions and instantly receive analysis on key financial metrics for a broad range of companies. Our advanced models transform your inputs into valuable outputs, helping you make informed investment decisions.")
+st.write("Access our comprehensive database of region and sector analytics to compare and contrast companies across multiple sectors. Our tool provides a detailed analysis of each company’s valuation, enabling you to identify investment opportunities quickly.")
 st.text("‎") 
 
 #initialize data

@@ -73,60 +73,6 @@ def discoveryAPI(selectedCompany):
     response = requests.request("POST", url, headers=headers, data=payload, allow_redirects=False)
     return response
 
-def generate_bar_chart(fig, data_df, config):
-    for column in data_df.columns:
-        if column != config['x_column']:
-            fig.add_trace(go.Bar(
-                x=data_df[config['x_column']],
-                y=data_df[column],
-                name=column,
-                text=data_df[column].apply(lambda x: f'{x:.2f}'),  # Format labels to 2 decimals
-                textposition='outside',  # Position the labels outside the bars
-                insidetextanchor='start',  # Align the labels to the left
-                marker=dict(color=config['color'])
-            ))
-
-    fig.update_layout(title=config['title'])
-    fig.update_xaxes(title_text='Testcase')
-    fig.update_yaxes(title_text='Amount ($)')
-    fig.update_xaxes(type="category")
-
-# def generate_comb_chart(data, value_pairs, title):
-#     # Check for None values in value_pairs
-#     if any(value is None for value in value_pairs.values()):
-#         # Create an empty chart with a message
-#         fig, ax = plt.subplots(figsize=(6, 4))
-#         ax.text(0.5, 0.5, 'No Data Available', fontsize=12, ha='center')
-#         ax.set_xlabel(title)
-#         ax.set_ylabel("Count")
-#         ax.set_title(title + " Distribution")
-#         ax.set_xticks([])
-#         ax.set_yticks([])
-#         ax.axis('off')
-#         return fig
-    
-#     # Continue with the original function if no None values are found
-#     df = pd.DataFrame(data)
-#     bar_width = (df["Historical"].max() - df["Historical"].min()) / len(df)
-#     fig, ax = plt.subplots()
-#     ax.bar(df["Historical"], df["Count"], width=bar_width, align='center', color='#020887', label="Original Data")
-
-#     min_value = value_pairs["Min"]
-#     max_value = value_pairs["Max"]
-#     ax.fill_betweenx(y=[ax.get_ylim()[0], ax.get_ylim()[1]], x1=min_value, x2=max_value, color='#f4d35e', alpha=0.7, label="Min-Max Range", zorder=0)
-
-#     for label, value in value_pairs.items():
-#         line_color = '#BA1B1D' if label == "Analyst Prediction" else '#f4d35e'
-#         line_width = 2 if label == "Analyst Prediction" else 1
-#         ax.axvline(x=value, color=line_color, linestyle='-', linewidth=line_width, label=f"{label}: {value}")
-
-#     ax.set_xlabel(title)
-#     ax.set_ylabel("Count")
-#     ax.set_title(title + " Distribution")
-#     ax.legend()
-
-#     return fig
-
 def generate_comb_chart(data, value_pairs, title):
 
     if 'Analyst Prediction' in value_pairs and value_pairs['Analyst Prediction'] is not None:
@@ -237,6 +183,19 @@ def multiply_and_convert_to_json(input_df):
 
     return json_data
 
+def string_check(value):
+    # Check if the value is a string
+    if isinstance(value, str):
+        try:
+            # Convert the string to an integer
+            value = int(value)
+        except ValueError:
+            # Handle the case where the string cannot be converted to an integer
+            return 0
+
+    # If value is an int or has been successfully converted to int, return it
+    return value
+
 #Start of UI
 image_path = "coherent-clsa-logo.svg"
 st.image(image_path, caption="", width=280)
@@ -304,7 +263,7 @@ if list_of_companies_data:
   companyOptions = [""] + [item["List of Companies"] for item in list_of_companies_data]
 colcompany01, colcompany02, colcompany03 = st.columns([1, 1, 1])
 with colcompany01:  
-  selectedCompany = st.selectbox("Select a Company", companyOptions)
+  selectedCompany = st.selectbox("Select an Equity Stock", companyOptions)
 with colcompany02:
   st.write("  ")
 with colcompany03:
@@ -345,6 +304,7 @@ if selectedCompany != "":
 
     st.write("Enter Min & Max Inputs")
     inputTableContainer = st.container()
+    st.caption("Default values for the input cells will be STD formula")
     DCbutton_clickedContainer = st.container()
 
   st.write("  ")
@@ -416,90 +376,103 @@ if selectedCompany != "":
         
         with st.expander("", expanded=True):
 
-          col01, col02, col03, col04, col05, col06 = st.columns([1,1,1,1,1,1])
+          col01, col02, col03 = st.columns([1,1,1])
           with col01:
-            GM_METRIC_placeholder = st.empty()
-          with col02:
-            NPM_METRIC_placeholder = st.empty()
-          with col03:
-            RG_METRIC_placeholder = st.empty()
-          with col04:
-            TM_METRIC_placeholder = st.empty()
-          with col05:
             TP_METRIC_placeholder = st.empty()
-          with col06:
+          with col02:
             TPU_METRIC_placeholder = st.empty()
+          with col03:
+            TM_METRIC_placeholder = st.empty()
+
+          col04, col05, col06 = st.columns([1,1,1])
+          with col04:
+            NPM_METRIC_placeholder = st.empty()
+          with col05:
+            RG_METRIC_placeholder = st.empty()
+          with col06:
+            GM_METRIC_placeholder = st.empty()
 
           st.markdown('***')
-
-          col11, col12 = st.columns([1,1])
-          with col11:
-            RG_CHART_placeholder = st.empty()
-          with col12:
-            NPM_CHART_placeholder = st.empty()
-            
-          col14, col15= st.columns([1,1])
-          with col14:
-            TM_CHART_placeholder = st.empty()
-          with col15:
-            TPU_CHART_placeholder = st.empty()
+           
+          TM_CHART_placeholder = st.empty()
+          TPU_CHART_placeholder = st.empty()
+          RG_CHART_placeholder = st.empty() 
+          NPM_CHART_placeholder = st.empty()
 
         # Chart value averages 
-        RG_AVG = round(Spark_outputs["Revenue Growth"] * 100, 2)
+        if isinstance(Spark_outputs["Revenue Growth"], int):
+          RG_AVG = round(Spark_outputs["Revenue Growth"] * 100, 2)
+        else: 
+          RG_AVG = 0
         RG_METRIC_placeholder.metric(label='Revenue Growth (%)', value=f"{RG_AVG}%" if RG_AVG != 0 else "N/A") 
 
-        GM_AVG = round(Spark_outputs["Gross Margin"] * 100, 1)
+        if isinstance(Spark_outputs["Gross Margin"], int):
+          GM_AVG = round(Spark_outputs["Gross Margin"] * 100, 1)
+        else: 
+          GM_AVG = 0
         GM_METRIC_placeholder.metric(label='Gross Margin (%)', value=f"{GM_AVG}%" if GM_AVG != 0 else "N/A")
 
-        NPM_AVG = round(Spark_outputs["Net Margin"] * 100, 2)
+        if isinstance(Spark_outputs["Net Margin"], int):
+          NPM_AVG = round(Spark_outputs["Net Margin"] * 100, 2)
+        else: 
+          NPM_AVG = 0
         NPM_METRIC_placeholder.metric(label='Net Margin (%)', value=f"{NPM_AVG}%" if NPM_AVG != 0 else "N/A")
 
-        TM_AVG = round(Spark_outputs["Target Multilple"], 2)
+        if isinstance(Spark_outputs["Target Multilple"], int):
+          TM_AVG = round(Spark_outputs["Target Multilple"], 2)
+        else: 
+          TM_AVG = 0
         TM_METRIC_placeholder.metric(label='Target Multiple (x)', value=str(TM_AVG) if TM_AVG != 0 else "N/A")
 
-        TP_AVG = round(Spark_outputs["Target Price"], 2)
+        if isinstance(Spark_outputs["Target Price"], int):
+          TP_AVG = round(Spark_outputs["Target Price"], 2)
+        else: 
+          TP_AVG = 0
         TP_METRIC_placeholder.metric(label='Target Price ($)', value=str(TP_AVG) if TP_AVG != 0 else "N/A")
 
-        TPU_AVG = round(Spark_outputs["Target Price (Upside)"], 2)
+        if isinstance(Spark_outputs["Target Price (Upside)"], int):
+          TPU_AVG = round(Spark_outputs["Target Price (Upside)"], 2)
+        else: 
+          TPU_AVG = 0
         TPU_METRIC_placeholder.metric(label='Target Price Upside ($)', value=str(TPU_AVG) if TPU_AVG != 0 else "N/A")
         
         #generate line chart of results
         if not DCerrors:
           data_rg = pd.DataFrame(Spark_outputs["rg_htable"])
           value_pairs_rg = {
-            "Min": round(Spark_outputs["minmaxtable"][1]["Revenue Growth"], 1),
-            "Max": round(Spark_outputs["minmaxtable"][2]["Revenue Growth"], 1),
+            "Min": round(string_check(Spark_outputs["minmaxtable"][1]["Revenue Growth"]), 1),
+            "Max": round(string_check(Spark_outputs["minmaxtable"][2]["Revenue Growth"]), 1),
             "Analyst Prediction": Spark_outputs["minmaxtable"][0]["Revenue Growth"]
           }
           chart_fig = generate_comb_chart(data_rg, value_pairs_rg, "Revenue Growth")
-          RG_CHART_placeholder.plotly_chart(chart_fig)
+          RG_CHART_placeholder.plotly_chart(chart_fig, use_container_width=True)
 
           data_npm = pd.DataFrame(Spark_outputs["npm_htable"])
           value_pairs_npm = {
-            "Min": round(Spark_outputs["minmaxtable"][1]["Net Profit Margin"], 2),
-            "Max": round(Spark_outputs["minmaxtable"][2]["Net Profit Margin"], 2),
+            "Min": round(string_check(Spark_outputs["minmaxtable"][1]["Net Profit Margin"]), 2),
+            "Max": round(string_check(Spark_outputs["minmaxtable"][2]["Net Profit Margin"]), 2),
             "Analyst Prediction": Spark_outputs["minmaxtable"][0]["Net Profit Margin"]
           }
           chart_fig = generate_comb_chart(data_npm, value_pairs_npm, "Net Profit Margin")
-          NPM_CHART_placeholder.plotly_chart(chart_fig)
+          NPM_CHART_placeholder.plotly_chart(chart_fig, use_container_width=True)
 
           data_tm = pd.DataFrame(Spark_outputs["TM_htable"])
           value_pairs_tm = {
-            "Min": round(Spark_outputs["minmaxtable"][1]["Target multiple"], 2),
-            "Max": round(Spark_outputs["minmaxtable"][2]["Target multiple"], 2),
+            "Min": round(string_check(Spark_outputs["minmaxtable"][1]["Target multiple"]), 2),
+            "Max": round(string_check(Spark_outputs["minmaxtable"][2]["Target multiple"]), 2),
             "Analyst Prediction": Spark_outputs["minmaxtable"][0]["Target multiple"]
           }
           chart_fig = generate_comb_chart(data_tm, value_pairs_tm, "Target Multiple")
-          TM_CHART_placeholder.plotly_chart(chart_fig)
+          TM_CHART_placeholder.plotly_chart(chart_fig, use_container_width=True)
 
           data_tpu = pd.DataFrame(Spark_outputs["TPU_htable"])
           value_pairs_tpu = {
-            "Min": round(Spark_outputs["minmaxtable"][1]["Target Price upside"], 2),
-            "Max": round(Spark_outputs["minmaxtable"][2]["Target Price upside"], 2),
+            "Min": round(string_check(Spark_outputs["minmaxtable"][1]["Target Price upside"]), 2),
+            "Max": round(string_check(Spark_outputs["minmaxtable"][2]["Target Price upside"]), 2),
             "Analyst Prediction": Spark_outputs["minmaxtable"][0]["Target Price upside"]
           }
           chart_fig = generate_comb_chart(data_tpu, value_pairs_tpu, "Target Price Upside")
-          TPU_CHART_placeholder.plotly_chart(chart_fig)
+          TPU_CHART_placeholder.plotly_chart(chart_fig, use_container_width=True)
 
           # Function to format values safely
           def safe_format(value):
