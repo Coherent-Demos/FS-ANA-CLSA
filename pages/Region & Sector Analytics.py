@@ -141,8 +141,14 @@ if DCbutton_clicked:
     if outputs['noOfCompanies_filtered'] > 0:
       SectorInputSplit = SectorInput.split(" ⠀ ")[1] if SectorInput != "ALL" else ""
       RegionInputSplit = RegionInput.split(" ⠀ ")[1] if RegionInput != "ALL" else "ALL Regions"
-      CompanyPS = "Companies" if outputs['noOfCompanies_filtered'] > 1 else "Company"
-      NumCompanies_Metric_placeholder.markdown("#### " + str(outputs['noOfCompanies_filtered']) + " " + SectorInputSplit + " " + CompanyPS + " in " + RegionInputSplit )
+      CompanyPS = "Equity Stocks" if outputs['noOfCompanies_filtered'] > 1 else "Equity Stock"
+      NumCompanies_Metric_placeholder.markdown(
+        "#### " + str(outputs['noOfCompanies_filtered']) + 
+        " <u>" + SectorInputSplit + "</u> " + 
+        CompanyPS + " in <u>" + 
+        RegionInputSplit + "</u>", 
+        unsafe_allow_html=True
+      )
 
       SummaryOfCompanies_Df = pd.DataFrame(outputs['CompanyResults'])
       

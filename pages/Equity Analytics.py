@@ -304,7 +304,7 @@ if selectedCompany != "":
 
     st.write("Enter Min & Max Inputs")
     inputTableContainer = st.container()
-    st.caption("Default values for the input cells will be STD formula")
+    st.caption("Default values for the input cells have been derived using the base assumption that min & max values are within +1 and -1 Standard Deviations")
     DCbutton_clickedContainer = st.container()
 
   st.write("  ")
