@@ -257,8 +257,10 @@ with st.expander("Spark Model"):
   st.markdown('[https://spark.uat.jp.coherent.global/clsa/products/Aggregate%20Models/Output%20Analysis%20-%20by%20Company/apiTester/test](https://spark.uat.jp.coherent.global/clsa/products/Aggregate%20Models/Output%20Analysis%20-%20by%20Company/apiTester/test)')
 
 st.write("  ")
-
+response = discoveryAPI("")
+discoveryData = response.json()['response_data']['outputs']
 list_of_companies_data = discoveryData.get("listOfCompanies")
+
 if list_of_companies_data:
   companyOptions = [""] + [item["List of Companies"] for item in list_of_companies_data]
 colcompany01, colcompany02, colcompany03 = st.columns([1, 1, 1])
