@@ -105,7 +105,11 @@ def generate_comb_chart(data, value_pairs, title):
 
     # Update layout
     fig.update_layout(
-        title=title + " Distribution",
+        title={
+            'text': title + " Distribution",
+            'x': 0.5,  # Center the title
+            'xanchor': 'center'
+        },
         xaxis_title=title,
         yaxis_title='Count',
         legend_title="Legend",
@@ -195,6 +199,10 @@ def string_check(value):
 
     # If value is an int or has been successfully converted to int, return it
     return value
+
+def detect_currency_or_percentage(value):
+    return "$" if " ($)" in value else "%" if " (%)" in value else ""
+
 
 #Start of UI
 image_path = "coherent-clsa-logo.svg"
@@ -304,7 +312,7 @@ if selectedCompany != "":
     ERRORBOX = st.empty()
     DCLoading = st.empty()
 
-    st.write("Enter Min & Max Inputs")
+    st.write("Choose your assumption range")
     inputTableContainer = st.container()
     st.caption("Default values for the input cells have been derived using the base assumption that min & max values are within +1 and -1 Standard Deviations")
     DCbutton_clickedContainer = st.container()
@@ -315,16 +323,20 @@ if selectedCompany != "":
   ResultsContainer = st.container()
 
   with inputTableContainer:
-    for i in range(len(json_data)):
-      json_data[i]["INPUTS"] = update_data[i]["Model Inputs"]  # Update INPUTS with Model Inputs
-      json_data[i]["Historical 1 SD"] = update_data[i]["HISTORICAL 1SD"]  # Update SD with Model Inputs
-      json_data[i]["CURR - BASE"] = update_data[i]["CURR"]  # Update CURR - BASE with CURR
-      json_data[i]["NEXT - BASE"] = update_data[i]["NEXT"]  # Update NEXT - BASE with NEXT
 
-      json_data[i]["CURR - MIN"] = json_data[i]["CURR - BASE"] - json_data[i]["Historical 1 SD"]
-      json_data[i]["CURR - MAX"] = json_data[i]["CURR - BASE"] + json_data[i]["Historical 1 SD"]
-      json_data[i]["NEXT - MIN"] = json_data[i]["NEXT - BASE"] - json_data[i]["Historical 1 SD"]
-      json_data[i]["NEXT - MAX"] = json_data[i]["NEXT - BASE"] + json_data[i]["Historical 1 SD"]
+    for i in range(len(json_data)):
+
+      unit = detect_currency_or_percentage(update_data[i]["Model Inputs"])
+      json_data[i]["INPUTS"] = update_data[i]["Model Inputs"].replace(" (%)", "").replace(" ($)", "")
+
+      json_data[i]["CURR - MIN"] = f"{json_data[i]['CURR - BASE'] - json_data[i]['Historical 1 SD']:.2f} {unit}"
+      json_data[i]["CURR - MAX"] = f"{json_data[i]['CURR - BASE'] + json_data[i]['Historical 1 SD']:.2f} {unit}"
+      json_data[i]["NEXT - MIN"] = f"{json_data[i]['NEXT - BASE'] - json_data[i]['Historical 1 SD']:.2f} {unit}"
+      json_data[i]["NEXT - MAX"] = f"{json_data[i]['NEXT - BASE'] + json_data[i]['Historical 1 SD']:.2f} {unit}"
+
+      json_data[i]['Historical 1 SD'] = f"{update_data[i]['HISTORICAL 1SD']:.2f} {unit}"
+      json_data[i]['CURR - BASE'] = f"{update_data[i]['CURR']:.2f} {unit}"
+      json_data[i]['NEXT - BASE'] = f"{update_data[i]['NEXT']:.2f} {unit}"
 
     def highlight_col(x):
       r = 'background-color: #fafafa; color: #909090'
@@ -340,7 +352,6 @@ if selectedCompany != "":
     numeric_columns = [col for col in all_numeric_columns if col not in columns_to_exclude]
 
     df[numeric_columns] = df[numeric_columns] * 100
-    df[all_numeric_columns] = df[all_numeric_columns].applymap('{:.2f}'.format) + " %"
 
     inputTable = st.data_editor(
       df.style.apply(highlight_col, axis=None),
@@ -378,27 +389,32 @@ if selectedCompany != "":
         
         with st.expander("", expanded=True):
 
-          col01, col02, col03 = st.columns([1,1,1])
+          spacer01, col01, col02, col03, spacer02 = st.columns([0.2,1,1,1,0.2])
+          
+          with spacer01:
+            st.empty()
           with col01:
-            TP_METRIC_placeholder = st.empty()
+            RG_METRIC_placeholder = st.empty()
           with col02:
             TPU_METRIC_placeholder = st.empty()
           with col03:
             TM_METRIC_placeholder = st.empty()
+          with spacer02:
+            st.empty()
 
-          col04, col05, col06 = st.columns([1,1,1])
-          with col04:
-            NPM_METRIC_placeholder = st.empty()
-          with col05:
-            RG_METRIC_placeholder = st.empty()
-          with col06:
-            GM_METRIC_placeholder = st.empty()
+          # col04, col05, col06 = st.columns([1,1,1])
+          # with col04:
+          #   NPM_METRIC_placeholder = st.empty()
+          # with col05:
+          #   TP_METRIC_placeholder = st.empty()
+          # with col06:
+          #   GM_METRIC_placeholder = st.empty()
 
           st.markdown('***')
            
           TM_CHART_placeholder = st.empty()
-          TPU_CHART_placeholder = st.empty()
           RG_CHART_placeholder = st.empty() 
+          TPU_CHART_placeholder = st.empty()
           NPM_CHART_placeholder = st.empty()
 
         # Chart value averages 
@@ -408,35 +424,35 @@ if selectedCompany != "":
           RG_AVG = 0
         RG_METRIC_placeholder.metric(label='Revenue Growth (%)', value=f"{RG_AVG}%" if RG_AVG != 0 else "N/A") 
 
-        if isinstance(Spark_outputs["Gross Margin"], int):
-          GM_AVG = round(Spark_outputs["Gross Margin"] * 100, 1)
-        else: 
-          GM_AVG = 0
-        GM_METRIC_placeholder.metric(label='Gross Margin (%)', value=f"{GM_AVG}%" if GM_AVG != 0 else "N/A")
-
-        if isinstance(Spark_outputs["Net Margin"], int):
-          NPM_AVG = round(Spark_outputs["Net Margin"] * 100, 2)
-        else: 
-          NPM_AVG = 0
-        NPM_METRIC_placeholder.metric(label='Net Margin (%)', value=f"{NPM_AVG}%" if NPM_AVG != 0 else "N/A")
-
-        if isinstance(Spark_outputs["Target Multilple"], int):
-          TM_AVG = round(Spark_outputs["Target Multilple"], 2)
-        else: 
-          TM_AVG = 0
-        TM_METRIC_placeholder.metric(label='Target Multiple (x)', value=str(TM_AVG) if TM_AVG != 0 else "N/A")
-
-        if isinstance(Spark_outputs["Target Price"], int):
-          TP_AVG = round(Spark_outputs["Target Price"], 2)
-        else: 
-          TP_AVG = 0
-        TP_METRIC_placeholder.metric(label='Target Price ($)', value=str(TP_AVG) if TP_AVG != 0 else "N/A")
-
         if isinstance(Spark_outputs["Target Price (Upside)"], int):
           TPU_AVG = round(Spark_outputs["Target Price (Upside)"], 2)
         else: 
           TPU_AVG = 0
         TPU_METRIC_placeholder.metric(label='Target Price Upside ($)', value=str(TPU_AVG) if TPU_AVG != 0 else "N/A")
+
+        # if isinstance(Spark_outputs["Gross Margin"], int):
+        #   GM_AVG = round(Spark_outputs["Gross Margin"] * 100, 1)
+        # else: 
+        #   GM_AVG = 0
+        # GM_METRIC_placeholder.metric(label='Gross Margin (%)', value=f"{GM_AVG}%" if GM_AVG != 0 else "N/A")
+
+        # if isinstance(Spark_outputs["Net Margin"], int):
+        #   NPM_AVG = round(Spark_outputs["Net Margin"] * 100, 2)
+        # else: 
+        #   NPM_AVG = 0
+        # NPM_METRIC_placeholder.metric(label='Net Margin (%)', value=f"{NPM_AVG}%" if NPM_AVG != 0 else "N/A")
+
+        # if isinstance(Spark_outputs["Target Multilple"], int):
+        #   TM_AVG = round(Spark_outputs["Target Multilple"], 2)
+        # else: 
+        #   TM_AVG = 0
+        # TM_METRIC_placeholder.metric(label='Target Multiple (x)', value=str(TM_AVG) if TM_AVG != 0 else "N/A")
+
+        # if isinstance(Spark_outputs["Target Price"], int):
+        #   TP_AVG = round(Spark_outputs["Target Price"], 2)
+        # else: 
+        #   TP_AVG = 0
+        # TP_METRIC_placeholder.metric(label='Target Price ($)', value=str(TP_AVG) if TP_AVG != 0 else "N/A")
         
         #generate line chart of results
         if not DCerrors:
@@ -500,3 +516,4 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
