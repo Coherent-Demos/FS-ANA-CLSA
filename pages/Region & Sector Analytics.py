@@ -151,6 +151,7 @@ if DCbutton_clicked:
       )
 
       SummaryOfCompanies_Df = pd.DataFrame(outputs['CompanyResults'])
+      SummaryOfCompanies_Df = SummaryOfCompanies_Df.loc[:, ~SummaryOfCompanies_Df.columns.str.contains('Column')]
       
       # Create the mapping
       company_logos = {company["List of Companies"]: company["Logo"] for company in discoveryData["listOfCompanies"]}
@@ -164,7 +165,7 @@ if DCbutton_clicked:
       all_numeric_columns = SummaryOfCompanies_Df.select_dtypes(include=[float, int]).columns
       SummaryOfCompanies_Df[all_numeric_columns] = SummaryOfCompanies_Df[all_numeric_columns].applymap('{:.2f}'.format)
 
-      columns_to_format = ["Gross Margin", "Revenue Growth", "Net Margin", "Target Price (Upside)"]
+      columns_to_format = ["Net Income Growth (%)", "Revenue Growth (%)"]
 
       for column in columns_to_format:
         # Convert the column to numeric type, errors='coerce' will turn non-convertible values into NaN
