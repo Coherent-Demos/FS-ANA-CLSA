@@ -91,27 +91,27 @@ def generate_comb_chart(data, value_pairs, title):
     fig = go.Figure()
 
     # Adding bar chart for the historical data
-    fig.add_trace(go.Bar(x=df['Historical'], y=df['Count'], name='Original Data', marker_color='#6700F6'))
+    fig.add_trace(go.Bar(x=df['Historical'], y=df['Count'], name='Original Data', marker_color='#000662'))
 
     # Add Min-Max range as a filled area (this should be added first)
     min_value = value_pairs['Min']
     max_value = value_pairs['Max']
-    fig.add_shape(type='rect', x0=min_value, x1=max_value, y0=df['Count'].min(), y1=df['Count'].max(), fillcolor='#1A003F', opacity=0.35, line_width=0)
+    fig.add_shape(type='rect', x0=min_value, x1=max_value, y0=df['Count'].min(), y1=df['Count'].max(), fillcolor='#FEF151', opacity=0.35, line_width=0)
 
     # Add line for "Analyst Prediction" as a shape
     if 'Analyst Prediction' in value_pairs:
         value = value_pairs['Analyst Prediction']
-        fig.add_shape(type='line', x0=value, x1=value, y0=df['Count'].min(), y1=df['Count'].max(), line=dict(color='#00FFA3', width=4))
+        fig.add_shape(type='line', x0=value, x1=value, y0=df['Count'].min(), y1=df['Count'].max(), line=dict(color='#5E75EC', width=4))
 
     # Add lines for each value pair except "Analyst Prediction"
     for label, value in value_pairs.items():
         if label != "Analyst Prediction":
-            fig.add_trace(go.Scatter(x=[value, value], y=[df['Count'].min(), df['Count'].max()], mode='lines', opacity=0.3, line=dict(color='#1A003F', width=1), name=f"{label}: {value}"))
+            fig.add_trace(go.Scatter(x=[value, value], y=[df['Count'].min(), df['Count'].max()], mode='lines', opacity=0.3, line=dict(color='#FEF151', width=1), name=f"{label}: {value}"))
 
     # Add line for "Analyst Prediction" to ensure it appears in the legend
     if 'Analyst Prediction' in value_pairs:
         value = value_pairs['Analyst Prediction']
-        fig.add_trace(go.Scatter(x=[value, value], y=[df['Count'].min(), df['Count'].max()], mode='lines', line=dict(color='#00FFA3', width=4), name=f"Analyst Prediction: {value}"))
+        fig.add_trace(go.Scatter(x=[value, value], y=[df['Count'].min(), df['Count'].max()], mode='lines', line=dict(color='#5E75EC', width=4), name=f"Analyst Prediction: {value}"))
 
     # Update layout
     fig.update_layout(
@@ -126,13 +126,15 @@ def generate_comb_chart(data, value_pairs, title):
                 'font': {'color': 'black', 'size': 14, 'family': 'Source Sans Pro, sans-serif'},
             },
             'tickfont': {'color': '#a0a0a0', 'size': 12, 'family': 'Source Sans Pro, sans-serif'},
+            'tickformat': ',.0%'  # Add percentage sign to x-axis labels
         },
         yaxis={
             'title': {
                 'text':  "<br />" + 'Frequency',
                 'font': {'color': 'black', 'size': 14, 'family': 'Source Sans Pro, sans-serif'}
             },
-            'tickfont': {'color': '#a0a0a0', 'size': 12, 'family': 'Source Sans Pro, sans-serif'}
+            'tickfont': {'color': '#a0a0a0', 'size': 12, 'family': 'Source Sans Pro, sans-serif'},
+            'dtick': 1  # Ensure only whole numbers are shown
         },
         legend={
             'orientation': "h",  # Horizontal orientation
@@ -290,7 +292,7 @@ DCerrors = []
 companyOptions = ["", 'MGM China', 'PICC', 'Sungrow', 'Yum China', 'CSL', 'CIMB', 'Grab']
 update_data = discoveryData.get("Model_Inputs")
 
-with st.expander("Spark Model"):
+with st.expander("Spark Service (Model)"):
   st.markdown('[https://spark.uat.jp.coherent.global/clsa/products/Aggregate%20Models/Output%20Analysis%20-%20by%20Company/apiTester/test](https://spark.uat.jp.coherent.global/clsa/products/Aggregate%20Models/Output%20Analysis%20-%20by%20Company/apiTester/test)')
 
 st.write("  ")
