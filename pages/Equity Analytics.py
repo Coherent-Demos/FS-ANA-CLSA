@@ -313,17 +313,17 @@ with colcompany03:
 if selectedCompany != "":
 
   with st.expander("", expanded=True):
-    col30, col31, col32, col33, col34 = st.columns([0.1,1.2,1,1,1])
+    col30, col31, col32, col33, col34 = st.columns([0.1,1.5,1,1,1])
     with col30:
       st.write("  ")
     with col31:
-      LOGO_placeholder = st.empty()
+      LOGO_placeholder = st.container()
     with col32:  
-      COMPANY_placeholder = st.empty()
+      COMPANY_placeholder = st.container()
     with col33:
-      REGION_placeholder = st.empty()
+      REGION_placeholder = st.container()
     with col34:
-      SECTOR_placeholder = st.empty()
+      SECTOR_placeholder = st.container()
 
     # Call discoveryAPI
     response = discoveryAPI(selectedCompany)
@@ -334,10 +334,14 @@ if selectedCompany != "":
     Local_Image = "pages/" + selectedCompany + ".svg"
     LOGO_url = Local_Image
 
-    LOGO_placeholder.image(LOGO_url, caption="", width=200)
-    COMPANY_placeholder.metric("Company", selectedCompany)
-    REGION_placeholder.metric("Region", discoveryData.get("Region"))
-    SECTOR_placeholder.metric("Sector", discoveryData.get("Sector"))
+    with LOGO_placeholder:
+      LOGO_placeholder.image(LOGO_url, caption="", width=200)
+    with COMPANY_placeholder:
+      st.markdown("<div class='custom-metric-label'>Company</div><div class='custom-metric-value'>" + selectedCompany + "</div>", unsafe_allow_html=True)
+    with REGION_placeholder:  
+      st.markdown("<div class='custom-metric-label'>Region</div><div class='custom-metric-value'>" + discoveryData.get("Region") + "</div>", unsafe_allow_html=True)
+    with SECTOR_placeholder:  
+      st.markdown("<div class='custom-metric-label'>Sector</div><div class='custom-metric-value'>" + discoveryData.get("Sector") + "</div>", unsafe_allow_html=True)
 
     st.write("  ")
 
@@ -361,16 +365,18 @@ if selectedCompany != "":
     for i in range(len(json_data)):
 
       unit = detect_currency_or_percentage(update_data[i]["Model Inputs"])
+      unit_dollar = "$" if unit == "$" else ""
+      unit_percent = "%" if unit == "%" else ""
       json_data[i]["INPUTS"] = update_data[i]["Model Inputs"].replace(" (%)", "").replace(" ($)", "")
 
-      json_data[i]["CURR - MIN"] = f"{json_data[i]['CURR - BASE'] - json_data[i]['Historical 1 SD']:.2f} {unit}"
-      json_data[i]["CURR - MAX"] = f"{json_data[i]['CURR - BASE'] + json_data[i]['Historical 1 SD']:.2f} {unit}"
-      json_data[i]["NEXT - MIN"] = f"{json_data[i]['NEXT - BASE'] - json_data[i]['Historical 1 SD']:.2f} {unit}"
-      json_data[i]["NEXT - MAX"] = f"{json_data[i]['NEXT - BASE'] + json_data[i]['Historical 1 SD']:.2f} {unit}"
+      json_data[i]["CURR - MIN"] = f"{unit_dollar} {json_data[i]['CURR - BASE'] - json_data[i]['Historical 1 SD']:.2f} {unit_percent}"
+      json_data[i]["CURR - MAX"] = f"{unit_dollar} {json_data[i]['CURR - BASE'] + json_data[i]['Historical 1 SD']:.2f} {unit_percent}"
+      json_data[i]["NEXT - MIN"] = f"{unit_dollar} {json_data[i]['NEXT - BASE'] - json_data[i]['Historical 1 SD']:.2f} {unit_percent}"
+      json_data[i]["NEXT - MAX"] = f"{unit_dollar} {json_data[i]['NEXT - BASE'] + json_data[i]['Historical 1 SD']:.2f} {unit_percent}"
 
-      json_data[i]['Historical 1 SD'] = f"{update_data[i]['HISTORICAL 1SD']:.2f} {unit}"
-      json_data[i]['CURR - BASE'] = f"{update_data[i]['CURR']:.2f} {unit}"
-      json_data[i]['NEXT - BASE'] = f"{update_data[i]['NEXT']:.2f} {unit}"
+      json_data[i]['Historical 1 SD'] = f"{unit_dollar} {update_data[i]['HISTORICAL 1SD']:.2f} {unit_percent}"
+      json_data[i]['CURR - BASE'] = f"{unit_dollar} {update_data[i]['CURR']:.2f} {unit_percent}"
+      json_data[i]['NEXT - BASE'] = f"{unit_dollar} {update_data[i]['NEXT']:.2f} {unit_percent}"
 
     def highlight_col(x):
       r = 'background-color: #fafafa; color: #909090'
@@ -500,6 +506,14 @@ st.markdown("""
     a {
             color: #6700F6!important;
     }          
+  
+    .custom-metric-label {
+        font-size: 14px;      
+    }
+            
+    .custom-metric-value {
+      font-size: 24px;
+    }
 </style>
 """, unsafe_allow_html=True)
 
