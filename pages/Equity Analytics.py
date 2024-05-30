@@ -106,12 +106,12 @@ def generate_comb_chart(data, value_pairs, title):
     # Add lines for each value pair except "Analyst Prediction"
     for label, value in value_pairs.items():
         if label != "Analyst Prediction":
-            fig.add_trace(go.Scatter(x=[value, value], y=[df['Count'].min(), df['Count'].max()], mode='lines', opacity=0.3, line=dict(color='#FEF151', width=1), name=f"{label}: {value}"))
+            fig.add_trace(go.Scatter(x=[value, value], y=[df['Count'].min(), df['Count'].max()], mode='lines', opacity=0.3, line=dict(color='#FEF151', width=1), name=f"{label}: {value:.2%}"))
 
     # Add line for "Analyst Prediction" to ensure it appears in the legend
     if 'Analyst Prediction' in value_pairs:
         value = value_pairs['Analyst Prediction']
-        fig.add_trace(go.Scatter(x=[value, value], y=[df['Count'].min(), df['Count'].max()], mode='lines', line=dict(color='#5E75EC', width=4), name=f"Analyst Prediction: {value}"))
+        fig.add_trace(go.Scatter(x=[value, value], y=[df['Count'].min(), df['Count'].max()], mode='lines', line=dict(color='#5E75EC', width=4), name=f"Analyst Prediction: {value:.2%}"))
 
     # Update layout
     fig.update_layout(
@@ -150,6 +150,7 @@ def generate_comb_chart(data, value_pairs, title):
     )
 
     return fig
+
 
 def gaussian(x, amplitude, mean, stddev):
     return amplitude * np.exp(-((x - mean) / stddev) ** 2)
