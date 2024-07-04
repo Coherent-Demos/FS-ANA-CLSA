@@ -36,7 +36,7 @@ def definedCombination(inputdata):
 
     # st.json(payload)
 
-    url = "https://excel.uat.jp.coherent.global/clsa/api/v3/folders/Aggregate%20Models/services/Output%20Analysis%20-%20by%20Company/execute"
+    url = "https://excel.uat.jp.coherent.global/clsa/api/v3/folders/Aggregate%20Models/services/Output%20Analysis%20-%20by%20Company%20-%20vF/execute"
     headers = {
        'Content-Type': 'application/json',
        'x-tenant-name': 'clsa',
